@@ -30,9 +30,11 @@ public class MST {
 
 	// function to print the constructed MST stored in parent[]
 	void printMST(int parent[], int graph[][]){
+		System.out.println("The Minimum Spanning Tree : ");
 		System.out.println("Edge \tWeight");
 		for (int i = 1; i < V; i++) 
 			System.out.println(parent[i] + " - " + i + "\t" + key[i]);
+		System.out.println("----------------------------");
 	}
 
 	// Function to construct and print MST for a graph represented

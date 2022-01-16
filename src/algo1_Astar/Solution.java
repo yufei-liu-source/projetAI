@@ -54,8 +54,10 @@ public class Solution {
 		v.hCost = MST.hCost[v.id];
 	}
 	
+	//calculate the gCost of a vertex in recursive method
 	public void calcG(Vertex v) {
 		if (v.parent != null) {
+			calcG(v.parent); 
 			v.gCost = v.parent.gCost + graph[v.parent.id][v.id];
 		}else
 			v.gCost = 0;
