@@ -4,7 +4,7 @@ package algo1_Astar;
 
 public class MST {
 	// Number of vertices in the graph
-	private static final int V = 5;
+	static final int V = 5;
 	
 	// Array to store constructed MST
 	int parent[] = new int[V];
@@ -93,78 +93,68 @@ public class MST {
 		return parent;
 	}
 	
+	//Matrix store the heuristic of every vertex
 	static int hCost[] = new int[] {0,0,0,0,0};
-	void getH() {
-		for(int i = 0; i < V; i++) {
-			if(parent[i]<0) {
-				hCost[i] += key[i];
-			}else {
-				if(parent[parent[i]]<0) {
-					hCost[i] += key[parent[i]] + key[i];				
+	
+	boolean AlreadyRunPrim() {
+		int checkerP = 0, checkerK = 0;
+		for(int j = 0; j < V; j++) {
+			checkerP += parent[j];
+			checkerK += key[j];
+		}
+		
+		if(checkerP <= 0 || checkerK <= 0) 		
+			return false;
+		return true;
+	}
+	
+	void writeInHcost() {
+		if(this.AlreadyRunPrim()) {
+			for(int i = 0; i < V; i++) {
+				if(parent[i]<0) {
+					hCost[i] += key[i];
 				}else {
-					if(parent[parent[parent[i]]]<0) {	
-						hCost[i] += key[parent[parent[i]]] + key[parent[i]] + key[i];	
+					if(parent[parent[i]]<0) {
+						hCost[i] += key[parent[i]] + key[i];				
 					}else {
-						if(parent[parent[parent[parent[i]]]]<0) {
-							hCost[i] += key[parent[parent[parent[i]]]] + key[parent[parent[i]]] + key[parent[i]] + key[i];
+						if(parent[parent[parent[i]]]<0) {	
+							hCost[i] += key[parent[parent[i]]] + key[parent[i]] + key[i];	
+						}else {
+							if(parent[parent[parent[parent[i]]]]<0) {
+								hCost[i] += key[parent[parent[parent[i]]]] + key[parent[parent[i]]] + key[parent[i]] + key[i];
+							}
 						}
-					}
-				}		
+					}		
+				}
 			}
+		}else System.out.println("Please run Prim Algorithme first before you write in hCost!");
+	}
+	
+	void showHcost() {
+		for(int i = 0; i < V; i++) {
+			System.out.println(hCost[i]);
 		}
 	}
 
-	public static void main(String[] args) { 
-		/***
-	  * The graph is represented as follow:
-	  * A <-- 0
-	  * B <-- 1
-	  * C <-- 2
-	  * D <-- 3
-	  * E <-- 4
-	  */
-		MST t = new MST();
-		//The table of weights between all the vertex
-		int graph[][] = new int[][] { 
-			{0, 21, 9, 21, 1},
-			{21, 0, 4, 8, 20},  
-			{9, 4, 0, 6, 7},  
-			{21, 8, 6, 0, 11},        
-			{1, 20, 7, 11, 0}};  
-			// Print the solution
-			t.primMST(graph);
-			
-			System.out.println("The sum of MST : " + t.sommeMST());
-			
-			int heuristic[][] = new int[][] {
-				{0,0,0,0,0},
-				{0,0,0,0,0},
-				{0,0,0,0,0},
-				{0,0,0,0,0},
-				{0,0,0,0,0}};
-				
-			int key[] = t.getKey();
-			int parent[] = t.getParent();
-			
+	
+	int heuristic[][] = new int[V][V];
+	void writeInHeuristic(){
+		if(this.AlreadyRunPrim()) {
 			for(int i = 0; i < V; i++) {
 				if(parent[i] >= 0) {
 					heuristic[i][parent[i]] = key[i];
 					heuristic[parent[i]][i] = key[i];
 				}
 			}
-			
-			t.getH();
-			for(int i = 0; i < V; i++) {
-					System.out.println(hCost[i]);
+		}else System.out.println("Please run Prim Algorithme first before you write in heuristic matrix!");
+	}
+	
+	void showHeuristic() {
+		for(int i = 0; i < V; i++) {
+			for(int j = 0; j < V; j++) {
+				System.out.println(heuristic[i][j]);
 			}
-			
-			for(int i = 0; i < V; i++) {
-				for(int j = 0; j < V; j++) {
-					System.out.println(heuristic[i][j]);
-				}
-				System.out.println("\n");
-			}
-			
-
+			System.out.println("\n");
+		}
 	}
 }
